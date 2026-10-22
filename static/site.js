@@ -75,6 +75,7 @@ function verseCard(v) {
   if (v.sanskrit) card.appendChild(el("p", "vsans", v.sanskrit));
   if (v.translit) card.appendChild(el("p", "vtrans", v.translit));
   card.appendChild(el("p", "vmean", v.meaning));
+  if (v.context) card.appendChild(el("p", "vctx", "Context: " + v.context));
 
   const act = el("div", "vact");
 
