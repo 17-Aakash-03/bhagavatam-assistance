@@ -1,0 +1,119 @@
+/* ============ Beautiful background layer ============ */
+body { background: #1a1433; }
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  background: linear-gradient(180deg, #120d2b 0%, #2a1f55 38%, #6b3a55 72%, #d9822b 100%);
+}
+
+/* twinkling stars (two layers) */
+.stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 90px 120px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 160px 60px, #ffe9a8, transparent),
+    radial-gradient(1px 1px at 230px 180px, #fff, transparent),
+    radial-gradient(1px 1px at 300px 90px, #fff, transparent);
+  background-size: 320px 220px;
+  animation: starTwinkle 5s ease-in-out infinite alternate;
+}
+.stars.s2 {
+  background-size: 410px 300px;
+  background-position: 120px 70px;
+  animation-duration: 7s;
+  animation-delay: 1.5s;
+  opacity: .8;
+}
+@keyframes starTwinkle { from { opacity: .25; } to { opacity: 1; } }
+
+/* rising sun glow at the bottom */
+.sunglow {
+  position: absolute;
+  left: 50%;
+  bottom: -45vmin;
+  width: 120vmin;
+  height: 120vmin;
+  margin-left: -60vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 130, .75) 0%, rgba(244, 150, 60, .35) 38%, rgba(244, 150, 60, 0) 70%);
+  animation: sunBreath 8s ease-in-out infinite alternate;
+}
+@keyframes sunBreath { to { transform: scale(1.08); opacity: .85; } }
+
+/* slowly turning mandala */
+.mandala {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(96vh, 100vw);
+  height: min(96vh, 100vw);
+  opacity: .2;
+  animation: spinSlow 140s linear infinite;
+}
+@keyframes spinSlow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* big glowing Om */
+.om-big {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: "Noto Sans Devanagari", "Segoe UI", sans-serif;
+  font-weight: 600;
+  font-size: min(62vh, 70vw);
+  line-height: 1;
+  color: transparent;
+  background: linear-gradient(180deg, #fff0b8 0%, #f4bd50 55%, #e08a2e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: .2;
+  filter: drop-shadow(0 0 40px rgba(244, 189, 80, .65));
+  animation: omPulse 7s ease-in-out infinite alternate;
+}
+@keyframes omPulse {
+  from { opacity: .13; transform: scale(1); }
+  to   { opacity: .26; transform: scale(1.04); }
+}
+
+/* floating golden sparks */
+.bg i {
+  position: absolute;
+  bottom: -20px;
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3c2 0%, #f4bd50 55%, rgba(244, 189, 80, 0) 100%);
+  opacity: 0;
+  animation: floatUp var(--d) linear var(--delay) infinite;
+}
+@keyframes floatUp {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  12%  { opacity: .9; }
+  85%  { opacity: .5; }
+  100% { transform: translate(34px, -110vh); opacity: 0; }
+}
+
+/* header and footer match the night theme */
+header { border-bottom: 1px solid rgba(244, 189, 80, .35); }
+footer {
+  background: rgba(20, 14, 44, .85);
+  border-top: 1px solid rgba(244, 189, 80, .3);
+}
+.notice { color: #cfc8e6; }
+
+/* soft scrollbar on dark background */
+main::-webkit-scrollbar-thumb { background: rgba(244, 189, 80, .45); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stars, .sunglow, .mandala, .om-big, .bg i { animation: none; }
+}
