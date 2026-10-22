@@ -157,3 +157,4 @@ body {
   .vgrid { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .hero::before, .hero .sun { animation: none; } }
+.vctx { font-size: .85rem; color: var(--muted); margin: -6px 0 14px; }
