@@ -1,0 +1,85 @@
+/* ============ Saved chats panel ============ */
+.drawer-ov {
+  position: fixed; inset: 0; z-index: 49;
+  background: rgba(10, 6, 30, .55);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s;
+}
+.drawer-ov.open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
+  width: min(350px, 88vw);
+  display: flex; flex-direction: column;
+  background: rgba(22, 15, 48, .97);
+  border-right: 1px solid rgba(244, 189, 80, .35);
+  box-shadow: 8px 0 30px rgba(0, 0, 0, .4);
+  color: #fff;
+  transform: translateX(-102%);
+  transition: transform .28s ease;
+}
+.drawer.open { transform: none; }
+
+.drawer-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(244, 189, 80, .25);
+}
+.drawer-head h2 { margin: 0; font-family: var(--serif); font-size: 1.5rem; color: var(--gold); }
+.drawer-x {
+  border: none; background: none; color: #fff; font-size: 1.6rem;
+  cursor: pointer; line-height: 1; opacity: .8;
+}
+.drawer-x:hover { opacity: 1; color: var(--gold); }
+
+.drawer-new {
+  margin: 14px 18px 6px;
+  padding: 10px 14px;
+  border: none; border-radius: 999px; cursor: pointer;
+  font: inherit; font-weight: 700; color: var(--night);
+  background: linear-gradient(135deg, var(--gold), var(--accent));
+  box-shadow: 0 6px 16px rgba(217, 130, 43, .35);
+}
+
+.hlist { list-style: none; margin: 0; padding: 8px 12px; overflow-y: auto; flex: 1; }
+.hlist::-webkit-scrollbar { width: 6px; }
+.hlist::-webkit-scrollbar-thumb { background: rgba(244, 189, 80, .4); border-radius: 6px; }
+
+.hitem {
+  display: flex; align-items: center; gap: 4px;
+  margin: 6px 0; padding: 4px 4px 4px 0;
+  border: 1px solid transparent; border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+}
+.hitem:hover { background: rgba(255, 255, 255, .12); }
+.hitem.current { border-color: var(--gold); background: rgba(244, 189, 80, .14); }
+
+.hopen {
+  flex: 1; min-width: 0; text-align: left;
+  border: none; background: none; color: #fff; cursor: pointer;
+  padding: 8px 10px; font: inherit;
+}
+.hopen b {
+  display: block; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hopen small { display: block; color: #cfc8e6; font-size: .75rem; margin-top: 2px; }
+
+.hsmall {
+  border: none; background: none; cursor: pointer;
+  font-size: .95rem; padding: 6px; border-radius: 8px; opacity: .75;
+}
+.hsmall:hover { opacity: 1; background: rgba(255, 255, 255, .15); }
+
+.hempty { color: #cfc8e6; text-align: center; padding: 26px 14px; font-size: .92rem; }
+
+.drawer-foot {
+  padding: 12px 18px; border-top: 1px solid rgba(244, 189, 80, .25);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
+  font-size: .75rem; color: #cfc8e6;
+}
+.drawer-foot button {
+  border: 1px solid rgba(255, 255, 255, .35); background: transparent; color: #fff;
+  border-radius: 999px; padding: 4px 12px; cursor: pointer; font: inherit; font-size: .8rem;
+}
+.drawer-foot button:hover { background: #e74c3c; border-color: #e74c3c; }
