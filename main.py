@@ -393,7 +393,7 @@ def chat():
         provider = "demo"
 
     if provider == "demo":
-        result = demo_reply(user_texts)
+        result = demo_reply(user_texts, info_only, all_text)
         result["demo"] = True
         return jsonify(result)
 
