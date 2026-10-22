@@ -302,3 +302,4 @@ select, #mic, #send {
 .a-glow { animation: glow 4s ease-in-out infinite; }
 .a-ripple { animation: ripple 4s ease-out infinite; transform-origin: center; }
 @media (prefers-reduced-motion: reduce) { .scene svg * { animation: none !important; } }
+.verse .context { font-size: .85rem; color: var(--muted); margin: 4px 0 6px; }
