@@ -1,0 +1,31 @@
+/* Home + Verses pages: let the animated background show through */
+
+.hero, .phead { background: transparent; }
+.hero::before, .hero .sun { display: none; }       /* the new background has its own stars and sun */
+.hero { padding-bottom: 90px; }
+
+.hero, .section, .band, .phead, .site-foot { position: relative; z-index: 1; }
+
+/* headings sit directly on the dark sky, so make them light */
+.section h2 { color: #fff; }
+.section .sub { color: #d8d0f0; }
+.count, .empty { color: #d8d0f0; }
+
+/* soft glass panel for the coloured bands */
+.band {
+  background: rgba(255, 255, 255, .06);
+  border-top: 1px solid rgba(244, 189, 80, .25);
+  border-bottom: 1px solid rgba(244, 189, 80, .25);
+}
+
+/* cards stay light so the text is easy to read */
+.step, .tile, .feat, .vcard {
+  background: rgba(255, 250, 240, .96);
+  box-shadow: 0 10px 28px rgba(10, 6, 30, .35);
+}
+.vcard { border-top: 5px solid var(--gold); }
+
+.site-foot {
+  background: rgba(20, 14, 44, .85);
+  border-top: 1px solid rgba(244, 189, 80, .3);
+}
