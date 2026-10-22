@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verses · Bhagavatam Assistance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/site.css">
+  <link rel="stylesheet" href="/static/bg.css">
+  <link rel="stylesheet" href="/static/site-bg.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="/"><span class="om">ॐ</span> Bhagavatam Assistance</a>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/verses" class="active">Verses</a>
+      <a href="/chat" class="btn small">Talk now</a>
+    </div>
+  </nav>
+
+  <header class="phead">
+    <h1>Verses from the Śrīmad-Bhāgavatam</h1>
+    <p>Sanskrit, transliteration and English meaning. Search, filter, listen.</p>
+  </header>
+
+  <main class="section">
+    <div class="toolbar">
+      <div class="searchbox">
+        <input id="q" type="search" placeholder="Search a word, feeling or verse number (e.g. fear, 1.2.6)">
+        <button class="micbtn" id="mic" type="button" title="Voice search" aria-label="Voice search">🎤</button>
+      </div>
+      <select id="lang" title="Voice search language">
+        <option value="en-IN">Speak in English</option>
+        <option value="hi-IN">हिन्दी में बोलें</option>
+      </select>
+      <select id="canto" title="Filter by canto"><option value="">All cantos</option></select>
+    </div>
+    <div class="chipbar" id="chips"></div>
+    <p class="count" id="count"></p>
+    <div class="vgrid" id="grid"></div>
+  </main>
+
+  <footer class="site-foot">
+    Meanings are short English summaries. Read the full verse and purport on
+    <a href="https://vedabase.io/en/library/sb/" target="_blank" rel="noopener">Vedabase</a>.
+  </footer>
+
+  <script src="/static/site.js"></script>
+  <script>
+    const grid = document.getElementById("grid");
+    const q = document.getElementById("q");
+    const count = document.getElementById("count");
+    const cantoSel = document.getElementById("canto");
+    const chips = document.getElementById("chips");
+    const THEMES = ["all", "depression", "anxiety", "motivation", "peace", "practice"];
+    let all = [];
+    let theme = new URLSearchParams(location.search).get("theme") || "all";
+    if (!THEMES.includes(theme)) theme = "all";
+
+    function cantoOf(v) {
+      const m = String(v.ref).match(/(\d+)\./);
+      return m ? m[1] : "";
+    }
+
+    function drawChips() {
+      chips.innerHTML = "";
+      THEMES.forEach((t) => {
+        const b = el("button", t === theme ? "on" : "", t === "all" ? "All" : t);
+        b.type = "button";
+        b.addEventListener("click", () => { theme = t; drawChips(); render(); });
+        chips.appendChild(b);
+      });
+    }
+
+    function render() {
+      const term = q.value.trim().toLowerCase();
+      const list = all.filter((v) => {
+        if (theme !== "all" && !(v.themes || []).includes(theme)) return false;
+        if (cantoSel.value && cantoOf(v) !== cantoSel.value) return false;
+        if (!term) return true;
+        const hay = [v.ref, v.meaning, v.translit, v.sanskrit, (v.themes || []).join(" ")].join(" ").toLowerCase();
+        return hay.includes(term);
+      });
+      grid.innerHTML = "";
+      list.forEach((v) => grid.appendChild(verseCard(v)));
+      if (!list.length) grid.appendChild(el("p", "empty", "No verse found. Try another word."));
+      count.textContent = list.length + " of " + all.length + " verses";
+    }
+
+    fetch("/api/verses")
+      .then((r) => r.json())
+      .then((data) => {
+        all = data;
+        [...new Set(all.map(cantoOf).filter(Boolean))]
+          .sort((a, b) => a - b)
+          .forEach((c) => {
+            const o = el("option", "", "Canto " + c);
+            o.value = c;
+            cantoSel.appendChild(o);
+          });
+        drawChips();
+        render();
+      })
+      .catch(() => { count.textContent = "Could not load verses. Is the server running?"; });
+
+    q.addEventListener("input", render);
+    cantoSel.addEventListener("change", render);
+
+    // voice search
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const mic = document.getElementById("mic");
+    if (!SR) {
+      mic.disabled = true;
+      mic.title = "Voice search is not supported in this browser (try Chrome or Edge)";
+    } else {
+      mic.addEventListener("click", () => {
+        const r = new SR();
+        r.lang = document.getElementById("lang").value;
+        r.onstart = () => mic.classList.add("on");
+        r.onend = r.onerror = () => mic.classList.remove("on");
+        r.onresult = (e) => { q.value = e.results[0][0].transcript; render(); };
+        r.start();
+      });
+    }
+  </script>
+</body>
+</html>
