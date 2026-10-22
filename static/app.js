@@ -308,6 +308,7 @@ function addBot(result) {
       if (v.sanskrit) box.appendChild(el("div", "sanskrit", v.sanskrit));
       if (v.translit) box.appendChild(el("div", "translit", v.translit));
       box.appendChild(el("div", "meaning", v.meaning));
+      if (v.context) box.appendChild(el("div", "context", "Context: " + v.context));
       const a = el("a", "", "Read the full verse and purport on Vedabase");
       a.href = v.url;
       a.target = "_blank";
