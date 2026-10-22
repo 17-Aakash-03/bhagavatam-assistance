@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bhagavatam Assistance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/site.css">
+  <link rel="stylesheet" href="/static/bg.css">
+  <link rel="stylesheet" href="/static/site-bg.css">
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="/"><span class="om">ॐ</span> Bhagavatam Assistance</a>
+    <div class="links">
+      <a href="/" class="active">Home</a>
+      <a href="/verses">Verses</a>
+      <a href="/chat" class="btn small">Talk now</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="sun"></div>
+    <div class="hero-inner">
+      <p class="eyebrow">Śrīmad-Bhāgavatam · gentle guidance</p>
+      <h1>When the mind feels heavy, <em>begin with one verse.</em></h1>
+      <p class="lead">Tell me how you feel. I will ask a few caring questions, then share small steps for today and verses from the Bhagavatam, with the meaning in simple English.</p>
+      <div class="cta">
+        <a class="btn" href="/chat">Start talking</a>
+        <a class="btn ghost" href="/verses">Browse verses</a>
+      </div>
+      <div class="quick">
+        <a href="/chat?q=I%27m%20feeling%20depressed">I'm feeling depressed</a>
+        <a href="/chat?q=I%20need%20motivation">I need motivation</a>
+        <a href="/chat?q=I%20feel%20anxious%20and%20stressed">I feel anxious</a>
+        <a href="/chat?q=What%20is%20peace%20of%20mind%3F">What is peace of mind?</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <h2>Verse of the day</h2>
+    <p class="sub">A new verse every day. Read it, listen to it, or ask what it means for your life.</p>
+    <div class="votd-wrap" id="votd">Loading...</div>
+  </section>
+
+  <div class="band">
+    <section class="section">
+      <h2>How it works</h2>
+      <p class="sub">Three calm steps, no sign-up.</p>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><h3>Share how you feel</h3><p>Type, or use the microphone. English, Hindi and Hinglish all work.</p></div>
+        <div class="step"><div class="num">2</div><h3>Answer gentle questions</h3><p>What happened? Have you told someone? How are sleep and food? So the guidance fits you.</p></div>
+        <div class="step"><div class="num">3</div><h3>Receive guidance</h3><p>Caring words, small steps for today, Bhagavatam verses with English meaning, and a calming picture.</p></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="section">
+    <h2>Find a verse for your mood</h2>
+    <p class="sub">Pick a feeling and see the verses that speak to it.</p>
+    <div class="tiles">
+      <a class="tile" href="/verses?theme=depression"><b>When I feel low</b><span>Comfort for sadness and loneliness</span></a>
+      <a class="tile" href="/verses?theme=anxiety"><b>Fear and worry</b><span>Calm for an anxious mind</span></a>
+      <a class="tile" href="/verses?theme=motivation"><b>Purpose and drive</b><span>Use each day well</span></a>
+      <a class="tile" href="/verses?theme=peace"><b>Peace of mind</b><span>Letting go of anger and craving</span></a>
+      <a class="tile" href="/verses?theme=practice"><b>Simple practice</b><span>Chanting, hearing, remembering</span></a>
+    </div>
+  </section>
+
+  <div class="band">
+    <section class="section">
+      <h2>Made to be easy to use</h2>
+      <p class="sub">&nbsp;</p>
+      <div class="feats">
+        <div class="feat"><b>🎤 Voice typing</b><br>Speak instead of typing.</div>
+        <div class="feat"><b>🔊 Listen</b><br>Hear answers and verses read aloud.</div>
+        <div class="feat"><b>📖 Sanskrit + English</b><br>Devanagari, transliteration and meaning.</div>
+        <div class="feat"><b>🛡️ Safe by design</b><br>Crisis messages show helpline numbers.</div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-foot">
+    This app offers spiritual guidance only. It is not a substitute for a doctor or therapist.
+    In India, free help is available on Tele-MANAS: <a href="tel:14416">14416</a>.
+  </footer>
+
+  <script src="/static/site.js"></script>
+  <script>
+    fetch("/api/verses")
+      .then((r) => r.json())
+      .then((list) => {
+        const box = document.getElementById("votd");
+        box.innerHTML = "";
+        if (!list.length) return;
+        const day = Math.floor(Date.now() / 86400000);
+        box.appendChild(verseCard(list[day % list.length]));
+      })
+      .catch(() => {
+        document.getElementById("votd").textContent = "Could not load the verse. Is the server running?";
+      });
+  </script>
+</body>
+</html>
